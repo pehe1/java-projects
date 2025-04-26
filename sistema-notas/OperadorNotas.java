@@ -6,10 +6,12 @@ import java.util.HashMap;
 //todo Criar a classe aluno
 
 abstract class Materia{
+
     //Atributos
     private String nome_materia;
     private int codigo_materia;
-    
+    private double avi;
+
     //Construtor
     public Materia(String nome_materia, int codigo_materia){
         this.nome_materia = nome_materia;
@@ -25,12 +27,24 @@ abstract class Materia{
         return codigo_materia;
     }
 
+    public double getAvi(){
+        return avi;
+    }
+
     public void setNome(String nome_materia){
         this.nome_materia = nome_materia;
     }
 
     public void setCodigoMateria(int codigo_materia){
         this.codigo_materia = codigo_materia;
+    }
+
+    public void setAvi(double avi){
+        if(avi<0 || avi>10){
+            System.out.println("A nota 'AVI' deve estar entre 0 e 10.");
+            return;
+        }   
+        this.avi = avi;
     }
 
     //Métodos
@@ -58,7 +72,6 @@ class ArquiteturaOrgComputadores extends Materia{
         notasAoc.put("P2", 0.0);
         notasAoc.put("Relatorios1", 0.0);
         notasAoc.put("Relatorios2", 0.0);
-        notasAoc.put("AVI", 0.0);
     }
 
     //Getter
@@ -68,8 +81,11 @@ class ArquiteturaOrgComputadores extends Materia{
 
     //Métodos
     public void adicionarNota(String nomeNota, double nota){
-        if(!notasAoc.containsKey(nomeNota)){
-            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: "+ notasAoc.keySet() +"\n");
+        if("AVI".equals(nomeNota)){
+            setAvi(nota);
+            System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+        }else if(!notasAoc.containsKey(nomeNota)){
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasAoc.keySet() + "\n");
         }else if(nota<0 || nota>10){
             System.out.println("Nota '" + nomeNota + "' inválida! Insira um valor positivo entre 0 e 10.\n");
         }else{
@@ -81,7 +97,7 @@ class ArquiteturaOrgComputadores extends Materia{
     public double calcularMedia(){
 
         return 0.28*notasAoc.get("P1") + 0.12*notasAoc.get("Relatorios1") +
-        0.12*notasAoc.get("AVI") + 0.12*notasAoc.get("Relatorios2") + 0.36*notasAoc.get("P2");
+        0.12*getAvi() + 0.12*notasAoc.get("Relatorios2") + 0.36*notasAoc.get("P2");
     }
 
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
@@ -94,31 +110,31 @@ class ArquiteturaOrgComputadores extends Materia{
                 soma += 0.36*notasAoc.get("P2");
                 soma += 0.12*notasAoc.get("Relatorios1");
                 soma += 0.12*notasAoc.get("Relatorios2");
-                soma += 0.12*notasAoc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             case "P2":
                 pesoNotaFaltante = 0.36;
                 soma += 0.28*notasAoc.get("P1");
                 soma += 0.12*notasAoc.get("Relatorios1");
                 soma += 0.12*notasAoc.get("Relatorios2");
-                soma += 0.12*notasAoc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             case "Relatórios1":
                 pesoNotaFaltante = 0.12;
                 soma += 0.28*notasAoc.get("P1");
                 soma += 0.36*notasAoc.get("P2");
                 soma += 0.12*notasAoc.get("Relatorios2");
-                soma += 0.12*notasAoc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             case "Relatórios2":
                 pesoNotaFaltante = 0.12;
                 soma += 0.28*notasAoc.get("P1");
                 soma += 0.36*notasAoc.get("P2");
                 soma += 0.12*notasAoc.get("Relatorios1");
-                soma += 0.12*notasAoc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             default:
-                System.out.println("Nota inexistente. Use os nomes válidos: "+ notasAoc.keySet() + "\n");
+                System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasAoc.keySet() + "\n");
                 return 0.0;
         }
         double notaFaltante = (6-soma)/pesoNotaFaltante;
@@ -128,13 +144,12 @@ class ArquiteturaOrgComputadores extends Materia{
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasAoc.get("P1") + "\n" +
         "Relatórios 1: " + notasAoc.get("Relatorios1") + "\n" + "P2: " + notasAoc.get("P2") + "\n" +
-        "Relatorios2: " + notasAoc.get("Relatorios2") + "\n" + "AVI: " + notasAoc.get("AVI") + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
+        "Relatorios2: " + notasAoc.get("Relatorios2") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
     public String mostrarBoletimMateria(){
         return toString();
     }
-
 }
 
 class CalculoDois extends Materia{
@@ -147,7 +162,6 @@ class CalculoDois extends Materia{
         notasCalc.put("P2",0.0);
         notasCalc.put("P3",0.0);
         notasCalc.put("P4",0.0);
-        notasCalc.put("AVI",0.0);
     }
 
     //Getter
@@ -157,8 +171,11 @@ class CalculoDois extends Materia{
 
     //Métodos
     public void adicionarNota(String nomeNota, double nota){
-        if(!notasCalc.containsKey(nomeNota)){
-            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: "+ notasCalc.keySet() +"\n");
+        if("AVI".equals(nomeNota)){
+            setAvi(nota);
+            System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+        }else if(!notasCalc.containsKey(nomeNota)){
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasCalc.keySet() + "\n");
         }else if(nota<0 || nota>10){
             System.out.println("Nota '" + nomeNota + "' inválida! Insira um valor positivo entre 0 e 10.\n");
         }else{
@@ -170,7 +187,7 @@ class CalculoDois extends Materia{
     public double calcularMedia(){
 
         return 0.2*notasCalc.get("P1") + 0.2*notasCalc.get("P2") + 0.24*notasCalc.get("P3")
-        + 0.24*notasCalc.get("P4") + 0.12*notasCalc.get("AVI");
+        + 0.24*notasCalc.get("P4") + 0.12*getAvi();
     }
 
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
@@ -183,31 +200,31 @@ class CalculoDois extends Materia{
                 soma += 0.2*notasCalc.get("P2");
                 soma += 0.24*notasCalc.get("P3");
                 soma += 0.24*notasCalc.get("P4");
-                soma += 0.12*notasCalc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             case "P2":
                 pesoNotaFaltante = 0.2;
                 soma += 0.2*notasCalc.get("P1");
                 soma += 0.24*notasCalc.get("P3");
                 soma += 0.24*notasCalc.get("P4");
-                soma += 0.12*notasCalc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             case "P3":
                 pesoNotaFaltante = 0.24;
                 soma += 0.2*notasCalc.get("P1");
                 soma += 0.2*notasCalc.get("P2");
                 soma += 0.24*notasCalc.get("P4");
-                soma += 0.12*notasCalc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             case "P4":
                 pesoNotaFaltante = 0.24;
                 soma += 0.2*notasCalc.get("P1");
                 soma += 0.2*notasCalc.get("P2");
                 soma += 0.24*notasCalc.get("P3");
-                soma += 0.12*notasCalc.get("AVI");
+                soma += 0.12*getAvi();
                 break;
             default:
-                System.out.println("Nota inexistente. Use os nomes válidos: "+ notasCalc.keySet() + "\n");
+                System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasCalc.keySet() + "\n");
                 return 0.0;
         }
         double notaFaltante = (6-soma)/pesoNotaFaltante;
@@ -217,7 +234,7 @@ class CalculoDois extends Materia{
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasCalc.get("P1") + "\n" +
         "P2: " + notasCalc.get("P2") + "\n" + "P3: " + notasCalc.get("P3") + "\n" +
-        "P4: " + notasCalc.get("P4") + "\n" + "AVI: " + notasCalc.get("AVI") + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
+        "P4: " + notasCalc.get("P4") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
     public String mostrarBoletimMateria(){
@@ -243,13 +260,15 @@ class EletricidadeAplicada extends Materia{
         notasEle.put("P2",0.0);
         notasEle.put("Relatorio3",0.0);
         notasEle.put("Relatorio4",0.0);
-        notasEle.put("AVI",0.0);
     }
 
     //Métodos 
     public void adicionarNota(String nomeNota, double nota){
-        if(!notasEle.containsKey(nomeNota)){
-            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: "+ notasEle.keySet() +"\n");
+        if("AVI".equals(nomeNota)){
+            setAvi(nota);
+            System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+        }else if(!notasEle.containsKey(nomeNota)){
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: "+" AVI, " + notasEle.keySet() + "\n");
         }else if(nota<0 || nota>10){
             System.out.println("Nota '" + nomeNota + "' inválida! Insira um valor positivo entre 0 e 10.\n");
         }else{
@@ -260,7 +279,7 @@ class EletricidadeAplicada extends Materia{
 
     public double calcularMedia(){
         return 0.32*notasEle.get("P1") + 0.08*notasEle.get("Relatorio1") + 0.08*notasEle.get("Relatorio2") +
-        0.36*notasEle.get("P2") + 0.12*notasEle.get("Relatorio3") + 0.12*notasEle.get("Relatorio4");
+        0.36*notasEle.get("P2") + 0.12*notasEle.get("Relatorio3") + 0.12*notasEle.get("Relatorio4") + 0.12*getAvi();
     }
 
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
@@ -275,6 +294,7 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.12*notasEle.get("Relatorio3");
                 soma += 0.12*notasEle.get("Relatorio4");
                 soma += 0.36*notasEle.get("P2");
+                soma += 0.12*getAvi();
                 break;
             case "Relatorio4":
                 pesoNotaFaltante = 0.12;
@@ -283,6 +303,7 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.08*notasEle.get("Relatorio2");
                 soma += 0.36*notasEle.get("P2");
                 soma += 0.12*notasEle.get("Relatorio3");
+                soma += 0.12*getAvi();
                 break;
             case "P2":
                 pesoNotaFaltante = 0.36;
@@ -291,9 +312,10 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.08*notasEle.get("Relatorio2");
                 soma += 0.12*notasEle.get("Relatorio3");
                 soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*getAvi();
                 break;
             default:
-                System.out.println("Nota inexistente. Use os nomes válidos: "+ notasEle.keySet() + "\n");
+                System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasEle.keySet() + "\n");
                 return 0.0;
         }
         double notaFaltante = (6-soma)/pesoNotaFaltante;
@@ -304,13 +326,12 @@ class EletricidadeAplicada extends Materia{
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasEle.get("P1") + "\n" +
         "Relatório 1 (L1): " + notasEle.get("Relatorio1") + "\n" + "Relatório 2 (L2): " + notasEle.get("Relatorio2") + "\n" +
         "P2: " + notasEle.get("P2") + "\n" + "Relatório 3 (L3): " + notasEle.get("Relatorio3") + "\n" + "Relatório 4 (L4): " +
-        notasEle.get("Relatorio4") + "\n" + "AVI: " + notasEle.get("AVI") + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
+        notasEle.get("Relatorio4") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
     public String mostrarBoletimMateria(){
         return toString();
     }
-
 }
 
 public class OperadorNotas{
