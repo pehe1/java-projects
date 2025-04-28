@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
 
+//todo alterar o set da avi, para se retornar boolean e a partir disto, mudar minimamente a lógica do método "adicionarNotas"
 //TODO Fazer o resto das matérias 
 //todo Criar a classe aluno
 
@@ -39,12 +40,13 @@ abstract class Materia{
         this.codigo_materia = codigo_materia;
     }
 
-    public void setAvi(double avi){
+    public boolean setAvi(double avi){
         if(avi<0 || avi>10){
-            System.out.println("A nota 'AVI' deve estar entre 0 e 10.");
-            return;
+            System.out.println("A nota 'AVI' deve estar entre 0 e 10, tente novamente.\n");
+            return false;
         }   
         this.avi = avi;
+        return true;
     }
 
     //Métodos
@@ -82,8 +84,9 @@ class ArquiteturaOrgComputadores extends Materia{
     //Métodos
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
-            setAvi(nota);
+            if(setAvi(nota)){
             System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+            }
         }else if(!notasAoc.containsKey(nomeNota)){
             System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasAoc.keySet() + "\n");
         }else if(nota<0 || nota>10){
@@ -172,8 +175,9 @@ class CalculoDois extends Materia{
     //Métodos
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
-            setAvi(nota);
+            if(setAvi(nota)){
             System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+            }    
         }else if(!notasCalc.containsKey(nomeNota)){
             System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasCalc.keySet() + "\n");
         }else if(nota<0 || nota>10){
@@ -265,10 +269,11 @@ class EletricidadeAplicada extends Materia{
     //Métodos 
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
-            setAvi(nota);
+            if(setAvi(nota)){
             System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+            }    
         }else if(!notasEle.containsKey(nomeNota)){
-            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: "+" AVI, " + notasEle.keySet() + "\n");
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasEle.keySet() + "\n");
         }else if(nota<0 || nota>10){
             System.out.println("Nota '" + nomeNota + "' inválida! Insira um valor positivo entre 0 e 10.\n");
         }else{
@@ -346,7 +351,7 @@ public class OperadorNotas{
         aoc.adicionarNota("P2", 6.5);
         aoc.adicionarNota("Relatorios1", 8.0);
         aoc.adicionarNota("Relatorios2", 9.0);
-        aoc.adicionarNota("AVI", 5.5);
+        aoc.adicionarNota("AVI", -1);
         aoc.adicionarNota("teste1", 10);
 
         System.out.println("Quanto falta para 6 na P1: " + aoc.quantoFaltaParaSeis("P1"));
