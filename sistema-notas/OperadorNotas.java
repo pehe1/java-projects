@@ -1,10 +1,7 @@
 import java.util.Scanner;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.HashMap;       
 
-//todo alterar o set da avi, para se retornar boolean e a partir disto, mudar minimamente a lógica do método "adicionarNotas"
-//TODO Fazer o resto das matérias 
-//todo Criar a classe aluno
 
 abstract class Materia{
 
@@ -339,6 +336,104 @@ class EletricidadeAplicada extends Materia{
     }
 }
 
+class Estatistica extends Materia{
+    //Atributos
+    private Map<String, Double> notasEst = new HashMap<>();
+
+    //Getter
+    public Map<String, Double> getNotasEst(){
+        return new HashMap<>(notasEst);
+    }
+
+    //Construtor
+    public Estatistica(){
+        super("Estatística I", 004);
+        notasEst.put("P1",0.0);
+        notasEst.put("P2",0.0);
+        notasEst.put("P3",0.0);
+        notasEst.put("P4", 0.0);
+    }
+
+    //Métodos
+    public void adicionarNota(String nomeNota, double nota){
+        if("AVI".equals(nomeNota)){
+            if(setAvi(nota)){
+                System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+            }
+        }else if(!notasEst.containsKey(nomeNota)){
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasEst.keySet() + "\n");
+        }else if(nota<0 || nota>10){
+            System.out.println("Nota '" + nomeNota + "' inválida! Insira um valor positivo entre 0 e 10.\n");
+        }else{
+            notasEst.put(nomeNota, nota);
+            System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+        }
+    }
+
+    public double calcularMedia(){
+        return 0.16*notasEst.get("P1") + 0.24*notasEst.get("P2") + 0.18*notasEst.get("P3") + 0.3*notasEst.get("P4") + 0.12*getAvi();
+    }
+
+    public double quantoFaltaParaSeis(String nomeNotaFaltante){
+        double soma = 0.0;
+        double pesoNotaFaltante = 0.0;
+
+        switch(nomeNotaFaltante){
+            case "P1":
+                pesoNotaFaltante = 0.16;
+                soma += 0.24*notasEst.get("P2");
+                soma += 0.18*notasEst.get("P3");
+                soma += 0.3*notasEst.get("P4");
+                soma += 0.12*getAvi();
+                break;
+            case "P2":
+                pesoNotaFaltante = 0.24;
+                soma += 0.16*notasEst.get("P1");
+                soma += 0.18*notasEst.get("P3");
+                soma += 0.3*notasEst.get("P4");
+                soma += 0.12*getAvi();
+                break;
+            case "P3":
+                pesoNotaFaltante = 0.18;
+                soma += 0.16*notasEst.get("P1");
+                soma += 0.24*notasEst.get("P2");
+                soma += 0.3*notasEst.get("P4");
+                soma += 0.12*getAvi();
+                break;
+            case "P4":
+                pesoNotaFaltante = 0.3;
+                soma += 0.16*notasEst.get("P1");
+                soma += 0.24*notasEst.get("P2");
+                soma += 0.18*notasEst.get("P3");
+                soma += 0.12*getAvi();
+                break;
+            case "AVI":
+                pesoNotaFaltante = 0.12;
+                soma += 0.16*notasEst.get("P1");
+                soma += 0.24*notasEst.get("P2");
+                soma += 0.18*notasEst.get("P3");
+                soma += 0.3*notasEst.get("P4");
+                break;
+            default:
+                System.out.println("Nota '" + nomeNotaFaltante + "' inexistente. Use os nomes válidos: AVI, " + notasEst.keySet() + "\n");
+                return 0.0;
+        }
+        double notaFaltante = (6-soma)/pesoNotaFaltante;
+        return notaFaltante;
+    }
+
+    public String toString(){
+        return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasEst.get("P1") + "\n" +
+        "P2: " + notasEst.get("P2") + "\n" + "P3: " + notasEst.get("P3") + "\n" +
+        "P4: " + notasEst.get("P4") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
+    }
+
+    public String mostrarBoletimMateria(){
+        return toString();
+    }
+
+}
+
 public class OperadorNotas{
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
@@ -346,7 +441,9 @@ public class OperadorNotas{
         ArquiteturaOrgComputadores aoc = new ArquiteturaOrgComputadores();
         CalculoDois c2 = new CalculoDois();
         EletricidadeAplicada ea = new EletricidadeAplicada();
+        Estatistica est = new Estatistica();
 
+        //Teste Arquitetura
         aoc.adicionarNota("P1", 6.4);
         aoc.adicionarNota("P2", 6.5);
         aoc.adicionarNota("Relatorios1", 8.0);
@@ -358,6 +455,7 @@ public class OperadorNotas{
 
         System.out.println(aoc.mostrarBoletimMateria());
 
+        //Teste Cálculo 2
         c2.adicionarNota("P1", 5.0);
         c2.adicionarNota("P2", 6.0);
         c2.adicionarNota("P3", 4.0);
@@ -368,7 +466,7 @@ public class OperadorNotas{
 
         System.out.println(c2.mostrarBoletimMateria());
 
-
+        //Teste Eletricidade
         ea.adicionarNota("P1", 7.5);
         ea.adicionarNota("Relatorio1", 6);
         ea.adicionarNota("Relatorio2", 8);
@@ -380,6 +478,20 @@ public class OperadorNotas{
         System.out.println(ea.mostrarBoletimMateria());
 
         System.out.println("Quanto falta para 6 na P2: " + ea.quantoFaltaParaSeis("P2"));
+
+        //Teste estatística
+        est.adicionarNota("P1", 4.0);
+        est.adicionarNota("P2", 6);
+        est.adicionarNota("P3", 10);
+        est.adicionarNota("P4", 7);
+        est.adicionarNota("AVI", 6);
+        est.adicionarNota("teste", 10);
+        est.adicionarNota("P2", -1);
+        est.adicionarNota("AVI", 11);
+
+        System.out.println(est.mostrarBoletimMateria());
+
+        System.out.println("Quanto falta para 6 na P4: " + est.quantoFaltaParaSeis("P4"));
 
         scanner.close();
     }
