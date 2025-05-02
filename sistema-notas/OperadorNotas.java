@@ -133,8 +133,15 @@ class ArquiteturaOrgComputadores extends Materia{
                 soma += 0.12*notasAoc.get("Relatorios1");
                 soma += 0.12*getAvi();
                 break;
+            case "AVI":
+                pesoNotaFaltante = 0.12;
+                soma += 0.28*notasAoc.get("P1");
+                soma += 0.36*notasAoc.get("P2");
+                soma += 0.12*notasAoc.get("Relatorios1");
+                soma += 0.12*notasAoc.get("Relatorios2");
+                break;
             default:
-                System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasAoc.keySet() + "\n");
+                System.out.println("Nota inexistente. Use os nomes válidos: AVI, " + notasAoc.keySet() + "\n");
                 return 0.0;
         }
         double notaFaltante = (6-soma)/pesoNotaFaltante;
@@ -224,6 +231,13 @@ class CalculoDois extends Materia{
                 soma += 0.24*notasCalc.get("P3");
                 soma += 0.12*getAvi();
                 break;
+            case "AVI":
+                pesoNotaFaltante = 0.12;
+                soma += 0.2*notasCalc.get("P1");
+                soma += 0.2*notasCalc.get("P2");
+                soma += 0.24*notasCalc.get("P3");            
+                soma += 0.24*notasCalc.get("P4");
+                break;
             default:
                 System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasCalc.keySet() + "\n");
                 return 0.0;
@@ -298,6 +312,15 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.36*notasEle.get("P2");
                 soma += 0.12*getAvi();
                 break;
+            case "P2":
+                pesoNotaFaltante = 0.36;
+                soma += 0.32*notasEle.get("P1");
+                soma += 0.08*notasEle.get("Relatorio1");
+                soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.12*notasEle.get("Relatorio3");
+                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*getAvi();
+                break;
             case "Relatorio4":
                 pesoNotaFaltante = 0.12;
                 soma += 0.32*notasEle.get("P1");
@@ -307,14 +330,40 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.12*notasEle.get("Relatorio3");
                 soma += 0.12*getAvi();
                 break;
-            case "P2":
-                pesoNotaFaltante = 0.36;
+            case "Relatorio3":
+                pesoNotaFaltante = 0.12;
                 soma += 0.32*notasEle.get("P1");
                 soma += 0.08*notasEle.get("Relatorio1");
                 soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.36*notasEle.get("P2");
+                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*getAvi();
+                break;
+            case "Relatorio2":
+                pesoNotaFaltante = 0.08;
+                soma += 0.32*notasEle.get("P1");
+                soma += 0.08*notasEle.get("Relatorio1");
+                soma += 0.36*notasEle.get("P2");
                 soma += 0.12*notasEle.get("Relatorio3");
                 soma += 0.12*notasEle.get("Relatorio4");
                 soma += 0.12*getAvi();
+                break;
+            case "Relatorio1":
+                pesoNotaFaltante = 0.08;
+                soma += 0.32*notasEle.get("P1");
+                soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.36*notasEle.get("P2");
+                soma += 0.12*notasEle.get("Relatorio3");
+                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*getAvi();
+                break;
+            case "AVI":
+                pesoNotaFaltante = 0.12;
+                soma += 0.32*notasEle.get("P1");
+                soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.36*notasEle.get("P2");
+                soma += 0.12*notasEle.get("Relatorio3");
+                soma += 0.12*notasEle.get("Relatorio4");
                 break;
             default:
                 System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasEle.keySet() + "\n");
@@ -451,7 +500,7 @@ public class OperadorNotas{
         aoc.adicionarNota("AVI", -1);
         aoc.adicionarNota("teste1", 10);
 
-        System.out.println("Quanto falta para 6 na P1: " + aoc.quantoFaltaParaSeis("P1"));
+        System.out.println("Quanto falta para 6 na AVI: " + aoc.quantoFaltaParaSeis("AVI"));
 
         System.out.println(aoc.mostrarBoletimMateria());
 
