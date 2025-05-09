@@ -281,7 +281,7 @@ class EletricidadeAplicada extends Materia{
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
-            System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+                System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
             }    
         }else if(!notasEle.containsKey(nomeNota)){
             System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasEle.keySet() + "\n");
@@ -480,6 +480,103 @@ class Estatistica extends Materia{
     public String mostrarBoletimMateria(){
         return toString();
     }
+}
+
+class EstruturaDeDados extends Materia{
+    private Map<String, Double> notasEd = new HashMap<>();
+
+    //Getter
+    public Map<String, Double> getNotasEd(){
+        return new HashMap<>(notasEd);
+    }
+
+    //Construtor
+    public EstruturaDeDados(){
+        super("Estrutura de Dados", 005);
+        notasEd.put("PT1",0.0);
+        notasEd.put("PT2",0.0);
+        notasEd.put("PP1",0.0);
+        notasEd.put("Projeto",0.0);
+    }
+
+    //Métodos
+    public void adicionarNota(String nomeNota, double nota){
+        if("AVI".equals(nomeNota)){
+            if(setAvi(nota)){
+                System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+            }
+        }else if(!notasEd.containsKey(nomeNota)){
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasEd.keySet() + "\n");
+        }else if(nota<0 || nota>10){
+            System.out.println("Nota '" + nomeNota + "' inválida. Insira um valor positivo entre 0 e 10.\n");
+        }else{
+            notasEd.put(nomeNota, nota);
+            System.out.println("Nota '" + nomeNota+ "' inserida com sucesso!\n");
+        }
+    }
+
+    public double calcularMedia(){
+        return 0.28*notasEd.get("PT1") + 0.12*notasEd.get("PP1") + 0.12*notasEd.get("Projeto") + 0.12*getAvi() +
+        0.36*notasEd.get("PT2");
+    }
+
+    public double quantoFaltaParaSeis(String nomeNotaFaltante){
+        double soma = 0.0;
+        double pesoNotaFaltante = 0.0;
+
+        switch(nomeNotaFaltante){
+            case "PT1":
+                pesoNotaFaltante = 0.28;
+                soma += 0.12*notasEd.get("PP1");
+                soma += 0.36*notasEd.get("PT2");
+                soma += 0.12*notasEd.get("Projeto");
+                soma += 0.12*getAvi();                
+                break;
+            case "PP1":
+                pesoNotaFaltante = 0.12;
+                soma += 0.28*notasEd.get("PT1");
+                soma += 0.36*notasEd.get("PT2");
+                soma += 0.12*notasEd.get("Projeto");
+                soma += 0.12*getAvi();                
+                break;
+            case "Projeto":
+                pesoNotaFaltante = 0.12;
+                soma += 0.28*notasEd.get("PT1");
+                soma += 0.36*notasEd.get("PT2");
+                soma += 0.12*notasEd.get("PP1");
+                soma += 0.12*getAvi();
+                break;
+            case "PT2":
+                pesoNotaFaltante = 0.36;
+                soma += 0.28*notasEd.get("PT1");
+                soma += 0.12*notasEd.get("PP1");
+                soma += 0.12*notasEd.get("Projeto");
+                soma += 0.12*getAvi();
+                break;
+            case "AVI":
+                pesoNotaFaltante = 0.12;
+                soma += 0.28*notasEd.get("PT1");
+                soma += 0.12*notasEd.get("PP1");
+                soma += 0.12*notasEd.get("Projeto");
+                soma += 0.36*notasEd.get("PT2");
+                break;
+            default:
+                System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasEd.keySet() + "\n");
+                return 0.0;
+           
+        }
+        return (6-soma) / pesoNotaFaltante;
+    }
+
+    public String toString(){
+        return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "Prova teórica 1: " + notasEd.get("PT1") + "\n" +
+        "Prova teórica 2: " + notasEd.get("PT2") + "\n" + "Prova prática: " + notasEd.get("PP1") + "\n" +
+        "Projeto: " + notasEd.get("Projeto") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
+    }
+    
+    public String mostrarBoletimMateria(){
+        return toString();
+    }
 
 }
 
@@ -491,6 +588,7 @@ public class OperadorNotas{
         CalculoDois c2 = new CalculoDois();
         EletricidadeAplicada ea = new EletricidadeAplicada();
         Estatistica est = new Estatistica();
+        EstruturaDeDados ed = new EstruturaDeDados();
 
         //Teste Arquitetura
         aoc.adicionarNota("P1", 6.4);
@@ -500,7 +598,7 @@ public class OperadorNotas{
         aoc.adicionarNota("AVI", -1);
         aoc.adicionarNota("teste1", 10);
 
-        System.out.println("Quanto falta para 6 na AVI: " + aoc.quantoFaltaParaSeis("AVI"));
+        System.out.println("Quanto faltaria para 6 se não tivesse feito a AVI: " + aoc.quantoFaltaParaSeis("AVI"));
 
         System.out.println(aoc.mostrarBoletimMateria());
 
@@ -511,7 +609,7 @@ public class OperadorNotas{
         c2.adicionarNota("P4", 5.5);
         c2.adicionarNota("AVI", -1);
 
-        System.out.println("Quanto falta para 6 na P4: " + c2.quantoFaltaParaSeis("P4"));
+        System.out.println("Quanto faltaria para 6 se não tivesse feito a P4: " + c2.quantoFaltaParaSeis("P4"));
 
         System.out.println(c2.mostrarBoletimMateria());
 
@@ -526,7 +624,7 @@ public class OperadorNotas{
         
         System.out.println(ea.mostrarBoletimMateria());
 
-        System.out.println("Quanto falta para 6 na P2: " + ea.quantoFaltaParaSeis("P2"));
+        System.out.println("Quanto faltaria para 6 se não tivesse feito a P2: " + ea.quantoFaltaParaSeis("P2"));
 
         //Teste estatística
         est.adicionarNota("P1", 4.0);
@@ -540,7 +638,20 @@ public class OperadorNotas{
 
         System.out.println(est.mostrarBoletimMateria());
 
-        System.out.println("Quanto falta para 6 na P4: " + est.quantoFaltaParaSeis("P4"));
+        System.out.println("Quanto faltaria para 6 não tivesse feito a P4: " + est.quantoFaltaParaSeis("P4"));
+
+        //Teste Estrutura de Dados 
+        ed.adicionarNota("PT1", 9);
+        ed.adicionarNota("PP1", 6.5);
+        ed.adicionarNota("PT2", 8);
+        ed.adicionarNota("Projeto", 8.5);
+        ed.adicionarNota("AVI", 5.0);
+        ed.adicionarNota("teste", 6);
+        ed.adicionarNota("Projeto", 87);
+
+        System.out.println(ed.mostrarBoletimMateria());
+
+        System.out.println("Quanto faltaria para 6 se não tivesse feito a PT2: "+ ed.quantoFaltaParaSeis("PT2"));
 
         scanner.close();
     }
