@@ -261,7 +261,7 @@ class EletricidadeAplicada extends Materia{
     //Atributos
     private Map<String, Double> notasEle = new HashMap<>();
 
-    //Getter
+    //Getter e setter
     public Map<String, Double> getNotasEle(){
         return new HashMap<>(notasEle);
     }
@@ -294,8 +294,8 @@ class EletricidadeAplicada extends Materia{
     }
 
     public double calcularMedia(){
-        return 0.32*notasEle.get("P1") + 0.08*notasEle.get("Relatorio1") + 0.08*notasEle.get("Relatorio2") +
-        0.36*notasEle.get("P2") + 0.12*notasEle.get("Relatorio3") + 0.12*notasEle.get("Relatorio4") + 0.12*getAvi();
+        return 0.32*notasEle.get("P1") + 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2")) +
+        0.36*notasEle.get("P2") + 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4")) + 0.12*getAvi();
     }
 
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
@@ -305,27 +305,22 @@ class EletricidadeAplicada extends Materia{
         switch(nomeNotaFaltante){
             case "P1":
                 pesoNotaFaltante = 0.32;
-                soma += 0.08*notasEle.get("Relatorio1");
-                soma += 0.08*notasEle.get("Relatorio2");
-                soma += 0.12*notasEle.get("Relatorio3");
-                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2"));
+                soma += 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4"));
                 soma += 0.36*notasEle.get("P2");
                 soma += 0.12*getAvi();
                 break;
             case "P2":
                 pesoNotaFaltante = 0.36;
                 soma += 0.32*notasEle.get("P1");
-                soma += 0.08*notasEle.get("Relatorio1");
-                soma += 0.08*notasEle.get("Relatorio2");
-                soma += 0.12*notasEle.get("Relatorio3");
-                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2"));
+                soma += 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4"));
                 soma += 0.12*getAvi();
                 break;
             case "Relatorio4":
                 pesoNotaFaltante = 0.12;
                 soma += 0.32*notasEle.get("P1");
-                soma += 0.08*notasEle.get("Relatorio1");
-                soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2"));
                 soma += 0.36*notasEle.get("P2");
                 soma += 0.12*notasEle.get("Relatorio3");
                 soma += 0.12*getAvi();
@@ -333,8 +328,7 @@ class EletricidadeAplicada extends Materia{
             case "Relatorio3":
                 pesoNotaFaltante = 0.12;
                 soma += 0.32*notasEle.get("P1");
-                soma += 0.08*notasEle.get("Relatorio1");
-                soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2"));
                 soma += 0.36*notasEle.get("P2");
                 soma += 0.12*notasEle.get("Relatorio4");
                 soma += 0.12*getAvi();
@@ -344,8 +338,7 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.32*notasEle.get("P1");
                 soma += 0.08*notasEle.get("Relatorio1");
                 soma += 0.36*notasEle.get("P2");
-                soma += 0.12*notasEle.get("Relatorio3");
-                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4"));
                 soma += 0.12*getAvi();
                 break;
             case "Relatorio1":
@@ -353,17 +346,15 @@ class EletricidadeAplicada extends Materia{
                 soma += 0.32*notasEle.get("P1");
                 soma += 0.08*notasEle.get("Relatorio2");
                 soma += 0.36*notasEle.get("P2");
-                soma += 0.12*notasEle.get("Relatorio3");
-                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4"));
                 soma += 0.12*getAvi();
                 break;
             case "AVI":
                 pesoNotaFaltante = 0.12;
                 soma += 0.32*notasEle.get("P1");
-                soma += 0.08*notasEle.get("Relatorio2");
+                soma += 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2"));
                 soma += 0.36*notasEle.get("P2");
-                soma += 0.12*notasEle.get("Relatorio3");
-                soma += 0.12*notasEle.get("Relatorio4");
+                soma += 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4"));
                 break;
             default:
                 System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasEle.keySet() + "\n");
