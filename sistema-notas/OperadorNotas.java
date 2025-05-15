@@ -261,7 +261,7 @@ class EletricidadeAplicada extends Materia{
     //Atributos
     private Map<String, Double> notasEle = new HashMap<>();
 
-    //Getter e setter
+    //Getter 
     public Map<String, Double> getNotasEle(){
         return new HashMap<>(notasEle);
     }
@@ -282,7 +282,13 @@ class EletricidadeAplicada extends Materia{
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
                 System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
-            }    
+            }
+        }else if("Relatorio1".equals(nomeNota) || "Relatorio2".equals(nomeNota) || "Relatorio3".equals(nomeNota) || "Relatorio4".equals(nomeNota)){
+            if(nota<0 || nota>5){
+                System.out.println("Nota '" + nomeNota + "' inválida. Insira um valor positivo entre 0 e 5, para relatórios.\n");
+            }else{
+                notasEle.put(nomeNota, nota);
+            }
         }else if(!notasEle.containsKey(nomeNota)){
             System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasEle.keySet() + "\n");
         }else if(nota<0 || nota>10){
