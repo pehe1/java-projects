@@ -144,8 +144,7 @@ class ArquiteturaOrgComputadores extends Materia{
                 System.out.println("Nota inexistente. Use os nomes válidos: AVI, " + notasAoc.keySet() + "\n");
                 return 0.0;
         }
-        double notaFaltante = (6-soma)/pesoNotaFaltante;
-        return notaFaltante;
+        return (6-soma)/pesoNotaFaltante;
     }
 
     public String toString(){
@@ -242,8 +241,7 @@ class CalculoDois extends Materia{
                 System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasCalc.keySet() + "\n");
                 return 0.0;
         }
-        double notaFaltante = (6-soma)/pesoNotaFaltante;
-        return notaFaltante;
+        return (6-soma)/pesoNotaFaltante;
     }
 
     public String toString(){
@@ -366,8 +364,7 @@ class EletricidadeAplicada extends Materia{
                 System.out.println("Nota inexistente. Use os nomes válidos: AVI, "+ notasEle.keySet() + "\n");
                 return 0.0;
         }
-        double notaFaltante = (6-soma)/pesoNotaFaltante;
-        return notaFaltante;
+        return (6-soma)/pesoNotaFaltante;
     }
     
     public String toString(){
@@ -464,8 +461,7 @@ class Estatistica extends Materia{
                 System.out.println("Nota '" + nomeNotaFaltante + "' inexistente. Use os nomes válidos: AVI, " + notasEst.keySet() + "\n");
                 return 0.0;
         }
-        double notaFaltante = (6-soma)/pesoNotaFaltante;
-        return notaFaltante;
+        return (6-soma)/pesoNotaFaltante;
     }
 
     public String toString(){
@@ -577,6 +573,100 @@ class EstruturaDeDados extends Materia{
 
 }
 
+class ProgramacaoOrientadaObjeto extends Materia{
+    //Atributos
+    private Map<String, Double> notasPoo = new HashMap<>();
+
+    //Construtor
+    public ProgramacaoOrientadaObjeto(){
+        super("Programação Orientada a Objetos", 006);
+        notasPoo.put("PT1",0.0);
+        notasPoo.put("PP",0.0);
+        notasPoo.put("Projeto",0.0);
+        notasPoo.put("PT2",0.0);
+    }
+
+    //Getter
+    public Map<String, Double> getNotasPoo(){
+        return new HashMap<>(notasPoo);
+    }
+
+    //Métodos
+    public void adicionarNota(String nomeNota, double nota){
+        if("AVI".equals(nomeNota)){
+            if(setAvi(nota)){
+                System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+            }
+        }else if(!notasPoo.containsKey(nomeNota)){
+            System.out.println("Nota '" + nomeNota + "' inexistente. Use os nomes válidos: AVI, " + notasPoo.keySet() + "\n");
+        }else if(nota<0 || nota>10){
+            System.out.println("Nota '" + nomeNota + "' inválida! Insira um valor positivo entre 0 e 10.\n");
+        }else{
+            notasPoo.put(nomeNota, nota);
+            System.out.println("Nota '" + nomeNota + "' inserida com sucesso!\n");
+        }
+    }
+
+    public double calcularMedia(){
+        return 0.28*notasPoo.get("PT1") + 0.12*notasPoo.get("PP") + 0.2*notasPoo.get("Projeto") +
+        0.36*notasPoo.get("PT2") + 0.12*getAvi();
+    }
+    
+    public double quantoFaltaParaSeis(String notaFaltante){
+        double soma = 0.0;
+        double pesoNotaFaltante = 0.0;
+
+        switch(notaFaltante){
+            case "PT1":
+                pesoNotaFaltante = 0.28;
+                soma += 0.12*notasPoo.get("PP");
+                soma += 0.2*notasPoo.get("Projeto");
+                soma += 0.36*notasPoo.get("PT2");
+                soma += 0.12*getAvi();
+                break;
+            case "PP":
+                pesoNotaFaltante = 0.12;
+                soma += 0.28*notasPoo.get("PT1");
+                soma += 0.2*notasPoo.get("Projeto");
+                soma += 0.36*notasPoo.get("PT2");
+                soma += 0.12*getAvi();
+                break;
+            case "Projeto":
+                pesoNotaFaltante = 0.2;
+                soma += 0.28*notasPoo.get("PT1");
+                soma += 0.12*notasPoo.get("PP");
+                soma += 0.36*notasPoo.get("PT2");
+                soma += 0.12*getAvi();
+                break;
+            case "PT2":
+                pesoNotaFaltante = 0.36;
+                soma += 0.28*notasPoo.get("PT1");
+                soma += 0.12*notasPoo.get("PP");
+                soma += 0.2*notasPoo.get("Projeto");
+                soma += 0.12*getAvi();
+                break;
+            case "AVI":
+                pesoNotaFaltante = 0.12;
+                soma += 0.28*notasPoo.get("PT1");
+                soma += 0.12*notasPoo.get("PP");
+                soma += 0.2*notasPoo.get("Projeto");
+                soma += 0.36*notasPoo.get("PT2");
+        }
+        return (6-soma) / pesoNotaFaltante;
+    }
+
+    public String toString(){
+        return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "Prova teórica 1: " + notasPoo.get("PT1") + "\n" +
+        "Prova prática: " + notasPoo.get("PP") + "\n" + "Projeto: " + notasPoo.get("Projeto") + "\n" +
+        "Prova teórica 2: " + notasPoo.get("PT2") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
+    }
+
+    public String mostrarBoletimMateria(){
+        return toString();
+    }
+    
+}
+
 public class OperadorNotas{
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
@@ -586,6 +676,7 @@ public class OperadorNotas{
         EletricidadeAplicada ea = new EletricidadeAplicada();
         Estatistica est = new Estatistica();
         EstruturaDeDados ed = new EstruturaDeDados();
+        ProgramacaoOrientadaObjeto poo = new ProgramacaoOrientadaObjeto();
 
         //Teste Arquitetura
         aoc.adicionarNota("P1", 6.4);
@@ -623,7 +714,7 @@ public class OperadorNotas{
 
         System.out.println("Quanto faltaria para 6 se não tivesse feito a P2: " + ea.quantoFaltaParaSeis("P2"));
 
-        //Teste estatística
+        //Teste Estatística
         est.adicionarNota("P1", 4.0);
         est.adicionarNota("P2", 6);
         est.adicionarNota("P3", 10);
@@ -650,6 +741,20 @@ public class OperadorNotas{
 
         System.out.println("Quanto faltaria para 6 se não tivesse feito a PT2: "+ ed.quantoFaltaParaSeis("PT2"));
 
+        //Teste Programação Orientada a Objetos
+        poo.adicionarNota("PT1", 7);
+        poo.adicionarNota("PP1", 8);    
+        poo.adicionarNota("PT2", 9);
+        poo.adicionarNota("PT3", 8);
+        poo.adicionarNota("PT4", 7);
+        poo.adicionarNota("AVI", 6);
+        poo.adicionarNota("teste", 10);
+        poo.adicionarNota("PP1", -1); 
+
+        System.out.println(poo.mostrarBoletimMateria());
+
+        System.out.println("Quanto faltaria para 6 se não tivesse feito a PP1: " + poo.quantoFaltaParaSeis("PP1"));
+        
         scanner.close();
     }
 }
