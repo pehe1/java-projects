@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;       
 
+//todo Usar "@Override" o métodos herdados
+//todo Aplicar testes unitários
 
 abstract class Materia{
 
@@ -79,6 +81,7 @@ class ArquiteturaOrgComputadores extends Materia{
     }  
 
     //Métodos
+    @Override
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
@@ -94,12 +97,14 @@ class ArquiteturaOrgComputadores extends Materia{
         }
     }
 
+    @Override
     public double calcularMedia(){
 
         return 0.28*notasAoc.get("P1") + 0.12*notasAoc.get("Relatorios1") +
         0.12*getAvi() + 0.12*notasAoc.get("Relatorios2") + 0.36*notasAoc.get("P2");
     }
 
+    @Override
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
         double soma = 0.0;
         double pesoNotaFaltante = 0.0;
@@ -147,12 +152,14 @@ class ArquiteturaOrgComputadores extends Materia{
         return (6-soma)/pesoNotaFaltante;
     }
 
+    @Override
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasAoc.get("P1") + "\n" +
         "Relatórios 1: " + notasAoc.get("Relatorios1") + "\n" + "P2: " + notasAoc.get("P2") + "\n" +
         "Relatorios2: " + notasAoc.get("Relatorios2") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
+    @Override
     public String mostrarBoletimMateria(){
         return toString();
     }
@@ -176,6 +183,7 @@ class CalculoDois extends Materia{
     }
 
     //Métodos
+    @Override
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
@@ -191,12 +199,14 @@ class CalculoDois extends Materia{
         }
     }
 
+    @Override
     public double calcularMedia(){
 
         return 0.2*notasCalc.get("P1") + 0.2*notasCalc.get("P2") + 0.24*notasCalc.get("P3")
         + 0.24*notasCalc.get("P4") + 0.12*getAvi();
     }
 
+    @Override
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
         double soma = 0.0;
         double pesoNotaFaltante = 0.0;
@@ -244,18 +254,21 @@ class CalculoDois extends Materia{
         return (6-soma)/pesoNotaFaltante;
     }
 
+    @Override
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasCalc.get("P1") + "\n" +
         "P2: " + notasCalc.get("P2") + "\n" + "P3: " + notasCalc.get("P3") + "\n" +
         "P4: " + notasCalc.get("P4") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
+    @Override
     public String mostrarBoletimMateria(){
         return toString();
     }
 }
 
 class EletricidadeAplicada extends Materia{
+
     //Atributos
     private Map<String, Double> notasEle = new HashMap<>();
 
@@ -275,7 +288,9 @@ class EletricidadeAplicada extends Materia{
         notasEle.put("Relatorio4",0.0);
     }
 
-    //Métodos 
+    //Métodos
+
+    @Override 
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
@@ -297,11 +312,13 @@ class EletricidadeAplicada extends Materia{
         }
     }
 
+    @Override
     public double calcularMedia(){
         return 0.32*notasEle.get("P1") + 0.08*(notasEle.get("Relatorio1") + notasEle.get("Relatorio2")) +
         0.36*notasEle.get("P2") + 0.12*(notasEle.get("Relatorio3") + notasEle.get("Relatorio4")) + 0.12*getAvi();
     }
 
+    @Override
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
         double soma = 0.0;
         double pesoNotaFaltante = 0.0;
@@ -367,6 +384,7 @@ class EletricidadeAplicada extends Materia{
         return (6-soma)/pesoNotaFaltante;
     }
     
+    @Override
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasEle.get("P1") + "\n" +
         "Relatório 1 (L1): " + notasEle.get("Relatorio1") + "\n" + "Relatório 2 (L2): " + notasEle.get("Relatorio2") + "\n" +
@@ -374,6 +392,7 @@ class EletricidadeAplicada extends Materia{
         notasEle.get("Relatorio4") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
+    @Override
     public String mostrarBoletimMateria(){
         return toString();
     }
@@ -398,6 +417,7 @@ class Estatistica extends Materia{
     }
 
     //Métodos
+    @Override
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
@@ -413,10 +433,12 @@ class Estatistica extends Materia{
         }
     }
 
+    @Override
     public double calcularMedia(){
         return 0.16*notasEst.get("P1") + 0.24*notasEst.get("P2") + 0.18*notasEst.get("P3") + 0.3*notasEst.get("P4") + 0.12*getAvi();
     }
 
+    @Override
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
         double soma = 0.0;
         double pesoNotaFaltante = 0.0;
@@ -464,12 +486,14 @@ class Estatistica extends Materia{
         return (6-soma)/pesoNotaFaltante;
     }
 
+    @Override
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "P1: " + notasEst.get("P1") + "\n" +
         "P2: " + notasEst.get("P2") + "\n" + "P3: " + notasEst.get("P3") + "\n" +
         "P4: " + notasEst.get("P4") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
-
+    
+    @Override
     public String mostrarBoletimMateria(){
         return toString();
     }
@@ -493,6 +517,7 @@ class EstruturaDeDados extends Materia{
     }
 
     //Métodos
+    @Override
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
@@ -507,12 +532,13 @@ class EstruturaDeDados extends Materia{
             System.out.println("Nota '" + nomeNota+ "' inserida com sucesso!\n");
         }
     }
-
+    @Override
     public double calcularMedia(){
         return 0.28*notasEd.get("PT1") + 0.12*notasEd.get("PP1") + 0.12*notasEd.get("Projeto") + 0.12*getAvi() +
         0.36*notasEd.get("PT2");
     }
 
+    @Override
     public double quantoFaltaParaSeis(String nomeNotaFaltante){
         double soma = 0.0;
         double pesoNotaFaltante = 0.0;
@@ -561,12 +587,14 @@ class EstruturaDeDados extends Materia{
         return (6-soma) / pesoNotaFaltante;
     }
 
+    @Override
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "Prova teórica 1: " + notasEd.get("PT1") + "\n" +
         "Prova teórica 2: " + notasEd.get("PT2") + "\n" + "Prova prática: " + notasEd.get("PP1") + "\n" +
         "Projeto: " + notasEd.get("Projeto") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
     
+    @Override
     public String mostrarBoletimMateria(){
         return toString();
     }
@@ -592,6 +620,7 @@ class ProgramacaoOrientadaObjeto extends Materia{
     }
 
     //Métodos
+    @Override
     public void adicionarNota(String nomeNota, double nota){
         if("AVI".equals(nomeNota)){
             if(setAvi(nota)){
@@ -607,11 +636,13 @@ class ProgramacaoOrientadaObjeto extends Materia{
         }
     }
 
+    @Override
     public double calcularMedia(){
         return 0.28*notasPoo.get("PT1") + 0.12*notasPoo.get("PP") + 0.2*notasPoo.get("Projeto") +
         0.36*notasPoo.get("PT2") + 0.12*getAvi();
     }
     
+    @Override
     public double quantoFaltaParaSeis(String notaFaltante){
         double soma = 0.0;
         double pesoNotaFaltante = 0.0;
@@ -655,12 +686,14 @@ class ProgramacaoOrientadaObjeto extends Materia{
         return (6-soma) / pesoNotaFaltante;
     }
 
+    @Override
     public String toString(){
         return "\n----Boletim----\nMateria: " + getNome() + " - CM:"+ getCodigoMateria() + "\n" + "Prova teórica 1: " + notasPoo.get("PT1") + "\n" +
         "Prova prática: " + notasPoo.get("PP") + "\n" + "Projeto: " + notasPoo.get("Projeto") + "\n" +
         "Prova teórica 2: " + notasPoo.get("PT2") + "\n" + "AVI: " + getAvi() + "\n" + "Média: " + calcularMedia() + "\n----------------\n";
     }
 
+    @Override
     public String mostrarBoletimMateria(){
         return toString();
     }
